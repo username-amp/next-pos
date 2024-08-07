@@ -15,6 +15,10 @@ export default function Home() {
     router.push("/login");
   };
 
+  const handlePosClick = () => {
+    router.push("/pos");
+  };
+
   const handleCutoffClick = () => {
     setShowPinPopup('/cutoff');
   };
@@ -44,7 +48,7 @@ export default function Home() {
       <div className="bg-inherit w-1/2 p-6">
         <h1 className="text-4xl text-white mb-10 text-center font-serif">Dashboard</h1>
         <div className="grid grid-cols-3 gap-4">
-          <ButtonWithIcon src="/dPos.png" text="POS" bgColor="bg-customGray" />
+          <ButtonWithIcon src="/dPos.png" text="POS" bgColor="bg-customGray" onClick={handlePosClick} />
           <ButtonWithIcon src="/dCutoff.png" text="CUT OFF" bgColor="bg-customGray" onClick={handleCutoffClick} />
           <ButtonWithIcon src="/dReceipt.png" text="RECEIPT" bgColor="bg-customGray" onClick={handleReceiptClick} />
           <ButtonWithIcon src="/dSearch.png" text="SEARCH" bgColor="bg-customGray" onClick={handleSearchClick} />

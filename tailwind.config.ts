@@ -18,6 +18,8 @@ const config: Config = {
         loginColor: '#5A5A5A',
         backColor: '#1e1e1e',
         okButton: '#4f4f4f',
+        displayBack: '#383838',
+        inputColor: '#626262',
       },
 
       fontFamily: {
