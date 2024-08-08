@@ -7,7 +7,7 @@ interface DisplayAreaProps {
 
 const DisplayArea: React.FC<DisplayAreaProps> = ({ selectedFoods, totalPrice }) => {
   return (
-    <div className="bg-displayBack h-72 rounded-lg p-4 w-[99%] ml-3">
+    <div className="bg-displayBack h-72 rounded-lg p-4 w-full">
       <div className="bg-inputColor h-8 mb-4 rounded"></div>
       <div className="bg-displayBack h-44 rounded border-b-4 border-white flex flex-col space-y-2 overflow-y-auto">
         {selectedFoods.length === 0 ? (
@@ -21,7 +21,7 @@ const DisplayArea: React.FC<DisplayAreaProps> = ({ selectedFoods, totalPrice }) 
         )}
       </div>
       <div className="bg-displayBack p-2 text-white font-bold text-lg">
-        Total: ${totalPrice}
+        Total:  ₱{totalPrice}
       </div>
     </div>
   );

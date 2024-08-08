@@ -35,7 +35,7 @@ const Unli: React.FC<UnliProps> = ({ onFoodSelect }) => {
         return rows;
     };
 
-    const rows = splitIntoRows(foodItems, 4);
+    const rows = splitIntoRows(foodItems, 3);
 
     return (
         <div>

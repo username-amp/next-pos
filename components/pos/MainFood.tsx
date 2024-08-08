@@ -17,7 +17,7 @@ const MainFood: React.FC<MainFoodProps> = ({ onFoodSelect }) => {
       {buttonRows.map((row, rowIndex) => (
         <div
           key={rowIndex}
-          className={`flex gap-1 ${rowIndex % 2 === 1 ? 'justify-end' : ''}`}
+          className="flex gap-1"
         >
           {row.map((button, buttonIndex) => (
             <button

@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const LoginPage: React.FC = () => {
     const [username, setUsername] = useState('');
@@ -10,13 +12,19 @@ const LoginPage: React.FC = () => {
     const [modalMessage, setModalMessage] = useState('');
     const router = useRouter();
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (username === 'admin' && password === 'password') {
-            setModalMessage('Login Success!');
-            setShowModal(true);
-        } else {
+        try {
+            const response = await axios.post('/api/login', { username, password });
+
+            if (response.status === 200) {
+                Cookies.set('token', response.data.token, { expires: 1 }); // 1 day expiry
+                setModalMessage('Login Success!');
+                setShowModal(true);
+                router.push('/home');
+            }
+        } catch (error) {
             setModalMessage('No Account Found');
             setShowModal(true);
         }
@@ -72,7 +80,7 @@ const LoginPage: React.FC = () => {
                                     Login with RFID
                                 </Link>
                             </h1>
-                            <p className="hidden lg:block text-center text-gray-400">Scan this bullshit to <br /> login instantly</p>
+                            <p className="hidden lg:block text-center text-gray-400">Scan this to <br /> login instantly</p>
                         </div>
                     </div>
                 </div>
@@ -86,7 +94,7 @@ const LoginPage: React.FC = () => {
                        <div className="flex justify-end">
                        <button 
                             onClick={handleCloseModal} 
-                            className=" py-1 px-4 justify-end bg-okButton text-white rounded hover:bg-gray-700   "
+                            className="py-1 px-4 justify-end bg-okButton text-white rounded hover:bg-gray-700"
                         >
                             OK
                         </button>

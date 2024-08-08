@@ -1,18 +1,23 @@
 'use client'
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import axios from 'axios';
 import EnterPin from '@/components/enterPin/enterPin';
 import SearchPopup from '@/components/SearchPopup';
+import Image from 'next/image';
 
 export default function Home() {
   const router = useRouter();
-
   const [showPinPopup, setShowPinPopup] = useState<string | null>(null);
   const [showSearchPopup, setShowSearchPopup] = useState(false);
 
-  const handleLogout = () => {
-    router.push("/");
+  const handleLogout = async () => {
+    try {
+      await axios.post('/api/logout');
+      router.push("/"); // Redirect to login page after logout
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   const handlePosClick = () => {
@@ -70,7 +75,9 @@ function ButtonWithIcon({ src, text, bgColor, onClick }: { src: string; text: st
       onClick={onClick}
     >
       <div className="relative w-12 h-12 mb-2">
-        <Image src={src} alt={text} layout="fill" objectFit="contain" />
+        <div className="relative w-full h-full">
+          <Image src={src} alt={text} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" style={{ objectFit: 'contain' }} />
+        </div>
       </div>
       <span className='font-thin text-2xl font-advent'>{text}</span>
     </button>

@@ -37,6 +37,9 @@ const NumberPad: React.FC<NumberPadProps> = ({ onQuantityChange }) => {
 
   return (
     <div>
+      <div className="bg-displayBack text-white text-md p-1 rounded-lg text-center w-[20%]">
+        {quantity || '0'}
+      </div>
       {buttons.map((row, rowIndex) => (
         <div key={rowIndex} className='flex gap-2 mt-2'>
           {row.map((button, buttonIndex) => (

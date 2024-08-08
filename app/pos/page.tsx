@@ -66,10 +66,10 @@ const PosPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-backColor p-4 relative overflow-x-hidden">
-      <div className="flex-1 flex flex-col space-y-4  relative overflow-x-hidden">
-        <div className="absolute bottom-0 md:top-0 md:left-0 w-full md:w-auto">
-          {currentCategory === null ? (
+    <div className="bg-backColor h-screen">
+     <div className="flex justify-between h-full">
+        <div className="w-fit bg-backColor md:w-1/2">
+        {currentCategory === null ? (
             <MainFood onFoodSelect={setCurrentCategory} />
           ) : (
             <div>
@@ -83,22 +83,23 @@ const PosPage: React.FC = () => {
             </div>
           )}
         </div>
-        <div className="w-full">
-          <div className="flex absolute w-full top-0 right-0 md:w-1/2">
+
+        <div className="bg-inherit h-screen w-fit md:w-1/2 flex flex-col justify-between">
+            <div>
             <DisplayArea selectedFoods={selectedFoods} totalPrice={calculateTotalPrice()} />
+            </div>
+          <div className="bg-inherit">
+            <div className="w-full flex justify-end">
+            <OtherButtons onDeleteLastFood={handleDeleteLastFood} />
+            </div>
           </div>
-          <div className="absolute right-0 top-[43%] md:top-[43%] md:right-0">
-            <div className="flex flex-row gap-2 md:flex-col">
-              <OtherButtons onDeleteLastFood={handleDeleteLastFood} />
+          <div className="bg-inherit">
+            <div className="justify-center w-full flex">
+            <NumberPad onQuantityChange={handleQuantityChange} />
             </div>
           </div>
         </div>
-      </div>
-      <div className="w-full">
-        <div className="w-full flex flex-col space-y-4 absolute bottom-0 left-[57%] md:bottom-3 md:left-[64%]">
-          <NumberPad onQuantityChange={handleQuantityChange} />
-        </div>
-      </div>
+     </div>
     </div>
   );
 };
