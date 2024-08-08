@@ -43,8 +43,8 @@ const NumberPad: React.FC<NumberPadProps> = ({ onQuantityChange }) => {
             <button
               key={buttonIndex}
               className={`h-16 w-24 text-white font-extralight text-2xl rounded-2xl transition-transform duration-150 ease-in-out ${
-                button === 'checkout' ? 'bg-white text-displayBack text-lg' :
-                button === 'del' ? 'bg-white text-displayBack' :
+                button === 'checkout' ? ' text-black bg-black text-lg' :
+                button === 'del' ? ' text-black bg-black' :
                 'bg-displayBack'
               } hover:scale-105 active:scale-95 hover:bg-gray-700 active:bg-gray-800`}
               onClick={() => handleButtonClick(button)}

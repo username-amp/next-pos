@@ -12,7 +12,7 @@ export default function Home() {
   const [showSearchPopup, setShowSearchPopup] = useState(false);
 
   const handleLogout = () => {
-    router.push("/login");
+    router.push("/");
   };
 
   const handlePosClick = () => {
@@ -63,7 +63,7 @@ export default function Home() {
   );
 }
 
-function ButtonWithIcon({ src, text, bgColor, onClick }) {
+function ButtonWithIcon({ src, text, bgColor, onClick }: { src: string; text: string; bgColor: string; onClick: React.MouseEventHandler<HTMLButtonElement> }) {
   return (
     <button
       className={`flex flex-col items-center ${bgColor} text-white p-4 rounded-2xl shadow hover:bg-opacity-80`}

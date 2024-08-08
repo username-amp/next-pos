@@ -15,15 +15,15 @@ import Desserts from "@/components/pos/MainfoodContent/Desserts";
 import Extra from "@/components/pos/MainfoodContent/Extra";
 
 const PosPage: React.FC = () => {
-  const [selectedFoods, setSelectedFoods] = useState<{ name: string, quantity: number }[]>([]);
+  const [selectedFoods, setSelectedFoods] = useState<{ name: string, quantity: number, price: number }[]>([]);
   const [currentCategory, setCurrentCategory] = useState<string | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
 
-  const handleFoodSelect = (food: string) => {
-    console.log('Selected food:', food);
+  const handleFoodSelect = (food: { name: string, price: number }) => {
+    console.log('Selected food:', food.name);
     console.log('Quantity:', quantity);
 
-    setSelectedFoods(prevFoods => [...prevFoods, { name: food, quantity }]);
+    setSelectedFoods(prevFoods => [...prevFoods, { name: food.name, quantity, price: food.price }]);
     setQuantity(1);
   };
 
@@ -34,6 +34,10 @@ const PosPage: React.FC = () => {
   const handleQuantityChange = (newQuantity: number) => {
     console.log('Quantity changed to:', newQuantity);
     setQuantity(newQuantity);
+  };
+
+  const calculateTotalPrice = () => {
+    return selectedFoods.reduce((total, food) => total + food.price * food.quantity, 0).toFixed(2);
   };
 
   const renderSelectedFoodComponent = () => {
@@ -63,7 +67,7 @@ const PosPage: React.FC = () => {
 
   return (
     <div className="flex flex-col h-screen bg-backColor p-4 relative overflow-x-hidden">
-      <div className="flex-1 flex flex-col space-y-4 w-full relative overflow-x-hidden">
+      <div className="flex-1 flex flex-col space-y-4  relative overflow-x-hidden">
         <div className="absolute bottom-0 md:top-0 md:left-0 w-full md:w-auto">
           {currentCategory === null ? (
             <MainFood onFoodSelect={setCurrentCategory} />
@@ -81,7 +85,7 @@ const PosPage: React.FC = () => {
         </div>
         <div className="w-full">
           <div className="flex absolute w-full top-0 right-0 md:w-1/2">
-            <DisplayArea selectedFoods={selectedFoods} />
+            <DisplayArea selectedFoods={selectedFoods} totalPrice={calculateTotalPrice()} />
           </div>
           <div className="absolute right-0 top-[43%] md:top-[43%] md:right-0">
             <div className="flex flex-row gap-2 md:flex-col">
