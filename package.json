@@ -11,6 +11,7 @@
   "dependencies": {
     "axios": "^1.7.3",
     "cookie": "^0.6.0",
+    "daisyui": "^4.12.10",
     "jose": "^5.6.3",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",

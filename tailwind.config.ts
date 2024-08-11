@@ -23,10 +23,12 @@ const config: Config = {
       },
 
       fontFamily: {
-        advent: ['Advent Pro', 'san-serif'],
+        advent: ['Advent Pro', 'san-serif', 'JetBrains Mono'],
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('daisyui'),
+  ],
 };
 export default config;

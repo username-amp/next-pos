@@ -1,15 +1,17 @@
 'use client'
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
 import Cookies from "js-cookie";
+import Loading from "@/components/loading";
 
 const LoginPage: React.FC = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -22,7 +24,15 @@ const LoginPage: React.FC = () => {
                 Cookies.set('token', response.data.token, { expires: 1 }); // 1 day expiry
                 setModalMessage('Login Success!');
                 setShowModal(true);
-                router.push('/home');
+
+                // Show the loading modal after a short delay
+                setTimeout(() => {
+                    setShowModal(false);
+                    setLoading(true);
+                    setTimeout(() => {
+                        router.push('/home');
+                    }, 2000); // Delay before redirecting
+                }, 1000); // Delay before showing Loading
             }
         } catch (error) {
             setModalMessage('No Account Found');
@@ -32,16 +42,13 @@ const LoginPage: React.FC = () => {
 
     const handleCloseModal = () => {
         setShowModal(false);
-        if (modalMessage === 'Login Success!') {
-            router.push('/home');
-        }
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-backColor p-4 sm:p-8">
+        <div className="min-h-screen flex items-center justify-center bg-backColor p-4 sm:p-8 font-mono">
             <div className="bg-customGray p-10 sm:p-8 rounded-lg shadow-lg max-w-4xl w-full flex flex-col lg:flex-row">
                 <div className="lg:w-1/2 w-full mb-8 lg:mb-0">
-                    <h1 className="text-gray-100 text-3xl mb-6 text-center font-bold">Login</h1>
+                    <h1 className="text-gray-100 text-3xl mb-6 text-center font-mono">Login</h1>
                     <form onSubmit={handleSubmit}>
                         <div className="mb-4">
                             <label className="block text-gray-400 text-sm mb-2" htmlFor="username">Username</label>
@@ -73,14 +80,14 @@ const LoginPage: React.FC = () => {
                 </div>
                 <div className="lg:w-1/2 w-full justify-center items-center">
                     <div className="text-center">
-                        <img src="/icons-01.png" alt="RFID" width={180} height={180} className="rounded mb-3 ml-0 lg:ml-32 hidden lg:flex" />
+                        <img src="/prinshet-to-ah.png" alt="RFID" width={180} height={180} className="rounded mb-3 ml-0 lg:ml-32 hidden lg:flex" />
                         <div className="ml-0 lg:ml-4">
                             <h1 className="text-gray-400 text-center text-lg lg:text-xl">
                                 <Link href="#">
-                                    Login with RFID
+                                    Si Prinshet to ah
                                 </Link>
                             </h1>
-                            <p className="hidden lg:block text-center text-gray-400">Scan this to <br /> login instantly</p>
+                           {/*<p className="hidden lg:block text-center text-gray-400">Scan this to <br /> login instantly</p>*/ }
                         </div>
                     </div>
                 </div>
@@ -99,6 +106,15 @@ const LoginPage: React.FC = () => {
                             OK
                         </button>
                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Loading Modal */}
+            {loading && (
+                <div className="fixed inset-0 flex items-center justify-center bg-backColor bg-opacity-0 z-50">
+                    <div className="bg-inherit p-6 rounded-lg text-center">
+                          <span className="loading loading-spinner loading-lg text-white"></span>
                     </div>
                 </div>
             )}

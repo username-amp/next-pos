@@ -51,7 +51,7 @@ export default function Home() {
   return (
     <div className="bg-backColor w-full min-h-screen flex items-center justify-center">
       <div className="bg-inherit w-1/2 p-6">
-        <h1 className="text-4xl text-white mb-10 text-center font-serif">Dashboard</h1>
+        <h1 className="text-4xl text-white mb-10 text-center font-mono">Dashboard</h1>
         <div className="grid grid-cols-3 gap-4">
           <ButtonWithIcon src="/dPos.png" text="POS" bgColor="bg-customGray" onClick={handlePosClick} />
           <ButtonWithIcon src="/dCutoff.png" text="CUT OFF" bgColor="bg-customGray" onClick={handleCutoffClick} />

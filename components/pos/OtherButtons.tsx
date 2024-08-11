@@ -1,19 +1,23 @@
-'use client'
+// components/pos/OtherButtons.tsx
+'use client';
 import React from 'react';
 import { useRouter } from 'next/navigation';
 
-const buttonLabels = ['void', 'delete', 'logout'];
+const buttonLabels = ['checkout', 'void', 'delete', 'logout'];
 
 interface OtherButtonsProps {
   onDeleteLastFood: () => void;
+  onCheckout: () => void; // Add this prop
 }
 
-const OtherButtons: React.FC<OtherButtonsProps> = ({ onDeleteLastFood }) => {
+const OtherButtons: React.FC<OtherButtonsProps> = ({ onDeleteLastFood, onCheckout }) => {
   const router = useRouter(); // Use router instead of Router
 
   const handleButtonClick = (label: string) => {
     if (label === 'delete') {
       onDeleteLastFood();
+    } else if (label === 'checkout') {
+      onCheckout(); // Call the checkout handler
     } else if (label === 'logout') {
       router.push('/home'); // Correctly use router to navigate
     }

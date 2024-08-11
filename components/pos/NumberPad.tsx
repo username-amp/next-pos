@@ -4,7 +4,7 @@ const buttons = [
   ['7', '8', '9'],
   ['4', '5', '6'],
   ['1', '2', '3'],
-  ['del', '0', 'checkout'],
+  ['del', '0', 'confirm quantity'],
 ];
 
 interface NumberPadProps {
@@ -21,7 +21,7 @@ const NumberPad: React.FC<NumberPadProps> = ({ onQuantityChange }) => {
         console.log('Current quantity after del:', newQuantity);
         return newQuantity;
       });
-    } else if (button === 'checkout') {
+    } else if (button === 'confirm quantity') {
       const quantityNumber = parseInt(quantity, 10) || 1;
       onQuantityChange(quantityNumber);
       console.log('Quantity checked out:', quantityNumber);
@@ -37,23 +37,26 @@ const NumberPad: React.FC<NumberPadProps> = ({ onQuantityChange }) => {
 
   return (
     <div>
-      <div className="bg-displayBack text-white text-md p-1 rounded-lg text-center w-[20%]">
+      <div className="bg-displayBack text-white text-md p-1 rounded-lg text-center w-full flex flex-col items-center overflow-hidden">
         {quantity || '0'}
       </div>
       {buttons.map((row, rowIndex) => (
         <div key={rowIndex} className='flex gap-2 mt-2'>
           {row.map((button, buttonIndex) => (
-            <button
-              key={buttonIndex}
-              className={`h-16 w-24 text-white font-extralight text-2xl rounded-2xl transition-transform duration-150 ease-in-out ${
-                button === 'checkout' ? ' text-black bg-black text-lg' :
-                button === 'del' ? ' text-black bg-black' :
-                'bg-displayBack'
-              } hover:scale-105 active:scale-95 hover:bg-gray-700 active:bg-gray-800`}
-              onClick={() => handleButtonClick(button)}
-            >
-              {button}
-            </button>
+           <button
+           key={buttonIndex}
+           className={`h-16 w-24 text-white font-extralight text-2xl rounded-2xl transition-transform duration-150 ease-in-out ${
+             button === 'confirm quantity' ? 'text-black bg-black text-sm' :
+             button === 'del' ? 'text-black bg-black' :
+             'bg-displayBack'
+           } hover:scale-105 active:scale-95 hover:bg-gray-700 active:bg-gray-800`}
+           style={{ boxSizing: 'border-box' }}
+           onClick={() => handleButtonClick(button)}
+         >
+           {button}
+         </button>
+         
+          
           ))}
         </div>
       ))}
