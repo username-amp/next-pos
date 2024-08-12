@@ -1,19 +1,34 @@
+// components/pos/CashInputPad.tsx
 import React, { useState } from 'react';
 
 interface CashInputPadProps {
   totalAmount: number;
-  onCashInput: (cash: number) => void;
+  onCashInput: (cash: number, receiptNumber: string) => void;
+  selectedFoods: { name: string; quantity: number; price: number }[];
 }
 
-const CashInputPad: React.FC<CashInputPadProps> = ({ totalAmount, onCashInput }) => {
+const CashInputPad: React.FC<CashInputPadProps> = ({ totalAmount, onCashInput, selectedFoods }) => {
   const [cash, setCash] = useState<string>('');
 
-  const handleButtonClick = (button: string) => {
+  const handleButtonClick = async (button: string) => {
     if (button === 'del') {
       setCash(prev => prev.slice(0, -1));
     } else if (button === 'confirm') {
       const cashAmount = parseFloat(cash) || 0;
-      onCashInput(cashAmount);
+      const response = await fetch('/api/insertFoods', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ selectedFoods, totalAmount, cashAmount }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const receiptNumber = data.receiptNumber;
+        onCashInput(cashAmount, receiptNumber);
+      } else {
+        console.error('Failed to insert data');
+      }
+
       setCash('');
     } else {
       setCash(prev => prev + button);
@@ -52,10 +67,6 @@ const CashInputPad: React.FC<CashInputPadProps> = ({ totalAmount, onCashInput })
           ))}
         </div>
       ))}
-      {/*<div className="text-white text-lg mt-4">
-        <p>Total Amount: ${totalAmount.toFixed(2)}</p>
-        <p>Change: ${(change >= 0 ? change : 0).toFixed(2)}</p>
-      </div>*/}
     </div>
   );
 };

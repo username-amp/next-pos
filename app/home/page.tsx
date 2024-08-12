@@ -11,6 +11,7 @@ export default function Home() {
   const [showPinPopup, setShowPinPopup] = useState<string | null>(null);
   const [showSearchPopup, setShowSearchPopup] = useState(false);
 
+
   const handleLogout = async () => {
     try {
       await axios.post('/api/logout');
@@ -64,6 +65,7 @@ export default function Home() {
 
       {showPinPopup && <EnterPin redirectTo={showPinPopup} onClose={handleClosePinPopup} />}
       {showSearchPopup && <SearchPopup onClose={handleCloseSearchPopup} />}
+
     </div>
   );
 }

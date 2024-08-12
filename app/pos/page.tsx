@@ -1,4 +1,6 @@
-'use client';
+// components/pos/PosPage.tsx
+
+'use client'
 import React, { useState } from "react";
 import DisplayArea from "@/components/pos/DisplayArea";
 import NumberPad from "@/components/pos/NumberPad";
@@ -21,6 +23,7 @@ const PosPage: React.FC = () => {
   const [quantity, setQuantity] = useState<number>(1);
   const [showCashPad, setShowCashPad] = useState<boolean>(false);
   const [cash, setCash] = useState<number>(0);
+  const [receiptNumber, setReceiptNumber] = useState<string | null>(null);
 
   const handleFoodSelect = (food: { name: string, price: number }) => {
     setSelectedFoods(prevFoods => [...prevFoods, { name: food.name, quantity, price: food.price }]);
@@ -35,9 +38,20 @@ const PosPage: React.FC = () => {
     setQuantity(newQuantity);
   };
 
-  const handleCashInput = (cashAmount: number) => {
+  const handleCashInput = async (cashAmount: number, receiptNumber: string) => {
     setCash(cashAmount);
     setShowCashPad(false); // Hide cash pad after confirmation
+    setReceiptNumber(receiptNumber); // Set the receipt number
+
+    // Store receipt number in localStorage for later use
+    localStorage.setItem('receiptNumber', receiptNumber);
+  };
+
+  const handleVoid = () => {
+    setSelectedFoods([]);
+    setCash(0);
+    setReceiptNumber(null);
+    localStorage.removeItem('receiptNumber'); // Clear receipt number from localStorage
   };
 
   const calculateTotalPrice = () => {
@@ -95,20 +109,32 @@ const PosPage: React.FC = () => {
 
         <div className="bg-inherit h-screen w-fit md:w-1/2 flex flex-col justify-between overflow-hidden">
           <div>
-            <DisplayArea selectedFoods={selectedFoods} totalPrice={calculateTotalPrice()} change={calculateChange()} /> {/* Ensure totalPrice is a string */}
+            <DisplayArea
+              selectedFoods={selectedFoods}
+              totalPrice={calculateTotalPrice()}
+              change={calculateChange()}
+            />
           </div>
           <div className="bg-inherit">
             <div className="w-full flex justify-end">
               <OtherButtons
                 onDeleteLastFood={handleDeleteLastFood}
                 onCheckout={() => setShowCashPad(true)}
+                onVoid={handleVoid}  // Added onVoid handler
+                selectedFoods={selectedFoods}
+                totalPrice={calculateTotalPrice()}
+                change={calculateChange()}
               />
             </div>
           </div>
           <div className="bg-inherit">
             <div className="justify-center w-full flex">
               {showCashPad ? (
-                <CashInputPad totalAmount={parseFloat(calculateTotalPrice())} onCashInput={handleCashInput} />
+                <CashInputPad
+                  totalAmount={parseFloat(calculateTotalPrice())}
+                  onCashInput={handleCashInput}
+                  selectedFoods={selectedFoods}
+                />
               ) : (
                 <NumberPad onQuantityChange={handleQuantityChange} />
               )}

@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
 import Cookies from "js-cookie";
-import Loading from "@/components/loading";
+
 
 const LoginPage: React.FC = () => {
     const [username, setUsername] = useState('');
