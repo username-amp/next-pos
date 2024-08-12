@@ -3,18 +3,24 @@ import { MongoClient } from 'mongodb';
 
 // Replace with your MongoDB connection string
 const uri = process.env.MONGODB_URI as string;
-const client = new MongoClient(uri);
+let client: MongoClient | null = null;
+
+async function connectToDatabase() {
+  if (!client) {
+    client = new MongoClient(uri);
+    await client.connect();
+  }
+  return client.db('posSystem');
+}
 
 export async function GET() {
   try {
-    await client.connect();
-    const database = client.db('posSystem');
+    const database = await connectToDatabase();
     const collection = database.collection('selectedFoods');
 
     // Fetch the latest inserted document
     const latestDocument = await collection.find().sort({ _id: -1 }).limit(1).toArray();
 
-    // If no document is found, return empty data
     if (latestDocument.length === 0) {
       return NextResponse.json({
         selectedFoods: [],
@@ -25,12 +31,13 @@ export async function GET() {
     }
 
     // Extract relevant fields from the document
-    const { selectedFoods = [], totalAmount: totalPrice = 0, cashAmount: cash = 0, receiptNumber } = latestDocument[0];
-    const change = (parseFloat(cash as any) - parseFloat(totalPrice as any)).toFixed(2);
+    const { selectedFoods = [], totalAmount: totalPrice = '0.00', cashAmount: cash = '0.00', receiptNumber } = latestDocument[0];
+
+    const change = (parseFloat(cash) - parseFloat(totalPrice)).toFixed(2);
 
     return NextResponse.json({
       selectedFoods,
-      totalPrice: totalPrice.toFixed(2),
+      totalPrice: parseFloat(totalPrice).toFixed(2),
       change,
       receiptNumber: receiptNumber || null
     });
@@ -43,6 +50,9 @@ export async function GET() {
       receiptNumber: null
     });
   } finally {
-    await client.close();
+    if (client) {
+      await client.close();
+      client = null;
+    }
   }
 }
